@@ -20,19 +20,6 @@ BASE_DELAY = 2
 SAVE_INTERVAL = 20
 
 
-def extract_city_from_description(desc: str) -> str:
-    desc_lower = desc.lower()
-    cities = [
-        "karachi", "lahore", "islamabad", "rawalpindi",
-        "faisalabad", "multan", "peshawar", "quetta",
-        "sialkot", "gujranwala", "hyderabad", "bahawalpur"
-    ]
-    for city in cities:
-        if city in desc_lower:
-            return city.title()
-    return ""
-
-
 def parse_engine_specs(engine_text: str):
     parts = [p.strip() for p in engine_text.split(' . ')]
     fuel_type = ""
@@ -66,13 +53,11 @@ def scrape_page(session: requests.Session, page: int):
                 except Exception:
                     continue
                 title = data.get("name", "").strip()
-                desc = data.get("description", "").strip()
                 year = data.get("modelDate", "")
                 offers = data.get("offers", {}) or {}
                 price = offers.get("price", "")
                 currency = offers.get("priceCurrency", "PKR")
                 link = offers.get("url", "")
-                city = extract_city_from_description(desc)
                 if isinstance(year, (int, float)):
                     year = str(year)
                 if isinstance(price, (int, float)):
@@ -80,8 +65,6 @@ def scrape_page(session: requests.Session, page: int):
                 else:
                     price_str = str(price)
                 mileage = ""
-                color = ""
-                registered_in = ""
                 fuel_type = ""
                 transmission = ""
                 engine_capacity = ""
@@ -93,20 +76,13 @@ def scrape_page(session: requests.Session, page: int):
                         text = spec_li.get_text(strip=True)
                         if any("pw-mileage" in c for c in classes):
                             mileage = text
-                        elif any("pw-color" in c for c in classes):
-                            color = text
-                        elif any("pw-registration" in c for c in classes):
-                            registered_in = text
                         elif any("pw-engine" in c for c in classes):
                             fuel_type, engine_capacity, transmission = parse_engine_specs(text)
                 cars.append({
                     "title": title,
                     "price": price_str,
-                    "city": city,
                     "year": year,
                     "mileage": mileage,
-                    "color": color,
-                    "registered_in": registered_in,
                     "fuel_type": fuel_type,
                     "engine_capacity": engine_capacity,
                     "transmission": transmission,
@@ -142,11 +118,8 @@ def save_to_csv(cars, filename):
     fieldnames = [
         "title",
         "price",
-        "city",
         "year",
         "mileage",
-        "color",
-        "registered_in",
         "fuel_type",
         "engine_capacity",
         "transmission",
@@ -231,3 +204,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
