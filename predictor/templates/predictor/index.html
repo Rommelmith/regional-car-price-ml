@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PakWheels Car Price Predictor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 40px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        #city_input {
+            display: none;
+            margin-top: 10px;
+        }
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        #result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+        }
+        .success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+        .price {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #28a745;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 10px;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚗 Car Price Predictor</h1>
+        <p class="subtitle">Predict Pakistani car prices using AI</p>
+
+        <form id="predictForm">
+            <div class="form-group">
+                <label for="title">Car Model:</label>
+                <input type="text" id="title" placeholder="e.g., Honda Civic Oriel" required>
+            </div>
+
+            <div class="form-group">
+                <label for="year">Year:</label>
+                <input type="number" id="year" placeholder="e.g., 2016" min="1990" max="2025" required>
+            </div>
+
+            <div class="form-group">
+                <label for="mileage">Mileage (km):</label>
+                <input type="number" id="mileage" placeholder="e.g., 96000" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="engine_capacity">Engine Capacity (cc):</label>
+                <input type="number" id="engine_capacity" placeholder="e.g., 1800" min="600" max="5000" required>
+            </div>
+
+            <div class="form-group">
+                <label for="city">City:</label>
+                <select id="city" required>
+                    <option value="">Select City</option>
+                    <option value="Lahore">Lahore</option>
+                    <option value="Karachi">Karachi</option>
+                    <option value="Islamabad">Islamabad</option>
+                    <option value="Rawalpindi">Rawalpindi</option>
+                    <option value="Peshawar">Peshawar</option>
+                    <option value="Faisalabad">Faisalabad</option>
+                    <option value="Multan">Multan</option>
+                    <option value="Gujranwala">Gujranwala</option>
+                    <option value="Sialkot">Sialkot</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Sargodha">Sargodha</option>
+                    <option value="Abbottabad">Abbottabad</option>
+                    <option value="Wah cantt">Wah cantt</option>
+                    <option value="Bahawalpur">Bahawalpur</option>
+                    <option value="Mardan">Mardan</option>
+                    <option value="Gujrat">Gujrat</option>
+                    <option value="Quetta">Quetta</option>
+                    <option value="Sahiwal">Sahiwal</option>
+                    <option value="Mansehra">Mansehra</option>
+                    <option value="Jhelum">Jhelum</option>
+                    <option value="Rahim Yar Khan">Rahim Yar Khan</option>
+                    <option value="Attock">Attock</option>
+                    <option value="Sheikhupura">Sheikhupura</option>
+                    <option value="Swabi">Swabi</option>
+                    <option value="Chakwal">Chakwal</option>
+                    <option value="Okara">Okara</option>
+                    <option value="Mandi bahauddin">Mandi bahauddin</option>
+                    <option value="Haripur">Haripur</option>
+                    <option value="Mirpur A.K.">Mirpur A.K.</option>
+                    <option value="Jhang">Jhang</option>
+                    <option value="other">Other (Type City Name)</option>
+                </select>
+                <input type="text" id="city_input" placeholder="Type city name" style="display:none;">
+            </div>
+
+            <div class="form-group">
+                <label for="transmission">Transmission:</label>
+                <select id="transmission" required>
+                    <option value="">Select Transmission</option>
+                    <option value="Automatic">Automatic</option>
+                    <option value="Manual">Manual</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="fuel_type">Fuel Type:</label>
+                <select id="fuel_type" required>
+                    <option value="">Select Fuel Type</option>
+                    <option value="Petrol">Petrol</option>
+                    <option value="Diesel">Diesel</option>
+                    <option value="CNG">CNG</option>
+                    <option value="Hybrid">Hybrid</option>
+                </select>
+            </div>
+
+            <button type="submit">Predict Price</button>
+            <div class="loading">🔄 Predicting...</div>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Show/hide city input based on selection
+        document.getElementById('city').addEventListener('change', function() {
+            const cityInput = document.getElementById('city_input');
+            if (this.value === 'other') {
+                cityInput.style.display = 'block';
+                cityInput.required = true;
+            } else {
+                cityInput.style.display = 'none';
+                cityInput.required = false;
+                cityInput.value = '';
+            }
+        });
+
+        document.getElementById('predictForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const loadingDiv = document.querySelector('.loading');
+            const resultDiv = document.getElementById('result');
+            const submitBtn = document.querySelector('button[type="submit"]');
+
+            // Show loading
+            loadingDiv.style.display = 'block';
+            submitBtn.disabled = true;
+            resultDiv.style.display = 'none';
+
+            // Get city value
+            const citySelect = document.getElementById('city');
+            const cityValue = citySelect.value === 'other' ?
+                document.getElementById('city_input').value :
+                citySelect.value;
+
+            const formData = {
+                title: document.getElementById('title').value,
+                year: document.getElementById('year').value,
+                mileage: document.getElementById('mileage').value,
+                engine_capacity: document.getElementById('engine_capacity').value,
+                city: cityValue,
+                transmission: document.getElementById('transmission').value,
+                fuel_type: document.getElementById('fuel_type').value
+            };
+
+            try {
+                const response = await fetch('/predict/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                resultDiv.style.display = 'block';
+
+                if (data.status === 'success') {
+                    resultDiv.className = 'success';
+                    resultDiv.innerHTML = `
+                        <h3>Predicted Price</h3>
+                        <div class="price">${data.formatted_price}</div>
+                        <p>Estimated value for ${formData.title}</p>
+                    `;
+                } else {
+                    resultDiv.className = 'error';
+                    resultDiv.innerHTML = `
+                        <strong>⚠️ Error:</strong><br>${data.error}
+                    `;
+                }
+            } catch (error) {
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'error';
+                resultDiv.innerHTML = `
+                    <strong>⚠️ Error:</strong><br>Failed to connect to server
+                `;
+            } finally {
+                loadingDiv.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
