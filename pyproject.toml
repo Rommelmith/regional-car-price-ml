@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "regional-car-price-ml"
+version = "1.0.0"
+description = "A reproducible PakWheels asking-price model with a Django prediction interface."
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "beautifulsoup4>=4.12,<5",
+    "Django>=5.2,<6",
+    "joblib>=1.4,<2",
+    "lxml>=5,<7",
+    "numpy>=2.0,<3",
+    "pandas>=2.2,<3",
+    "python-dotenv>=1.0,<2",
+    "requests>=2.32,<3",
+    "scikit-learn>=1.6,<2",
+    "xgboost-cpu>=3.0,<3.2; platform_system == 'Linux' and platform_machine == 'x86_64'",
+    "xgboost>=3.0,<3.2; platform_system != 'Linux' or platform_machine != 'x86_64'",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8,<10",
+    "pytest-cov>=6,<8",
+    "pytest-django>=4.9,<5",
+    "ruff>=0.9,<1",
+]
+
+[project.scripts]
+car-price-scrape = "car_price_ml.scrape:main"
+car-price-train = "car_price_ml.train:main"
+
+[tool.setuptools.packages.find]
+include = ["car_price_ml*"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["tests.py", "test_*.py"]
+testpaths = ["predictor", "tests"]
+addopts = "--strict-markers"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+exclude = ["predictor/migrations"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "DJ"]
+ignore = ["DJ001"]
+
+[tool.coverage.run]
+source = ["car_price_ml", "predictor"]
+omit = ["*/migrations/*"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true

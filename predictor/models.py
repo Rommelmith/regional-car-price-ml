@@ -1,3 +1,1 @@
-from django.db import models
-
-# Create your models here.
+"""The predictor app is stateless and defines no database models."""

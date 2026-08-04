@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.Python
+.venv/
+venv/
+ENV/
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Django and local configuration
+.env
+*.sqlite3
+staticfiles/
+
+# Jupyter and editors
+.ipynb_checkpoints/
+.idea/
+.vscode/
+*.swp
+*~
+
+# Generated data and model artifacts
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+artifacts/*
+!artifacts/.gitkeep
+
+# Scraper checkpoints and logs
+*.partial.csv
+*.log
+
+# OS metadata
+.DS_Store
+Thumbs.db

@@ -1,0 +1,118 @@
+{
+  "dataset": {
+    "cleaning": {
+      "clean_rows": 48257,
+      "duplicate_links_removed": 9071,
+      "generated_at_utc": "2026-08-04T17:54:29.276194+00:00",
+      "invalid_or_missing_feature_rows_removed": 31,
+      "missing_core_rows_removed": 1192,
+      "raw_rows": 59668,
+      "unsupported_powertrain_rows_removed": 1117
+    },
+    "path": "data/raw/pakwheels_cars.csv",
+    "sha256": "231376ef4fe5eb192e469ddbb782cc785935585316d77e9085aca6973eb370ea"
+  },
+  "environment": {
+    "django": "5.2.17",
+    "joblib": "1.5.3",
+    "numpy": "2.5.1",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.9.0",
+    "xgboost": "3.1.3"
+  },
+  "generated_at_utc": "2026-08-04T17:54:42.653529+00:00",
+  "median_baseline": {
+    "metrics": {
+      "mae_pkr": 2820724.4454207155,
+      "mape_percent": 99.31150646610376,
+      "median_ae_pkr": 1650000.0,
+      "r2": -0.045369498556406374,
+      "rmse_pkr": 6999046.960607657,
+      "within_10_percent": 9.716766590862104,
+      "within_20_percent": 21.428571428571427
+    }
+  },
+  "model": {
+    "metrics": {
+      "mae_pkr": 496914.7704543105,
+      "mape_percent": 11.536815401637114,
+      "median_ae_pkr": 203541.59375,
+      "r2": 0.8352405972221786,
+      "rmse_pkr": 2778619.6320752827,
+      "within_10_percent": 60.74012817862311,
+      "within_20_percent": 86.10709117221418
+    },
+    "metrics_by_price_band": {
+      "15m_and_above": {
+        "count": 316,
+        "mae_pkr": 5274118.5071202535,
+        "mape_percent": 14.20898694008871,
+        "median_ae_pkr": 2517556.0,
+        "r2": 0.5078869057637898,
+        "rmse_pkr": 15032953.1868054,
+        "within_10_percent": 51.89873417721519,
+        "within_20_percent": 78.79746835443038
+      },
+      "1m_to_3m": {
+        "count": 3504,
+        "mae_pkr": 216816.05131635274,
+        "mape_percent": 11.409529471772307,
+        "median_ae_pkr": 151793.5,
+        "r2": 0.7110476139336879,
+        "rmse_pkr": 319559.842766466,
+        "within_10_percent": 57.705479452054796,
+        "within_20_percent": 85.64497716894978
+      },
+      "3m_to_7m": {
+        "count": 3635,
+        "mae_pkr": 385410.03100068774,
+        "mape_percent": 8.597664048537997,
+        "median_ae_pkr": 280060.0,
+        "r2": 0.7379712082748517,
+        "rmse_pkr": 569501.1870606556,
+        "within_10_percent": 69.40852819807428,
+        "within_20_percent": 92.79229711141677
+      },
+      "7m_to_15m": {
+        "count": 945,
+        "mae_pkr": 869622.1522486772,
+        "mape_percent": 9.201092719716646,
+        "median_ae_pkr": 564212.0,
+        "r2": 0.594236455074342,
+        "rmse_pkr": 1332294.1142638028,
+        "within_10_percent": 68.57142857142857,
+        "within_20_percent": 89.20634920634922
+      },
+      "under_1m": {
+        "count": 1274,
+        "mae_pkr": 124058.24234693877,
+        "mape_percent": 21.342684157544255,
+        "median_ae_pkr": 88031.546875,
+        "r2": -0.0768787402134401,
+        "rmse_pkr": 223120.89019889105,
+        "within_10_percent": 40.73783359497645,
+        "within_20_percent": 67.81789638932496
+      }
+    },
+    "parameters": {
+      "device": "cpu",
+      "learning_rate": 0.05,
+      "max_depth": 6,
+      "n_estimators": 500
+    },
+    "type": "OneHotEncoder + log-target XGBRegressor"
+  },
+  "model_artifact": {
+    "path": "artifacts/car_price_pipeline.joblib",
+    "sha256": "62dcfab93725ee5b6f38e940c32ca542d5cc642fd42dcf29b25e3dccbb2d2548"
+  },
+  "schema_version": 1,
+  "split": {
+    "feature_group_overlap": 0,
+    "random_state": 42,
+    "requested_test_fraction": 0.2,
+    "strategy": "GroupShuffleSplit grouped by identical model features",
+    "test_rows": 9674,
+    "train_rows": 38583
+  }
+}

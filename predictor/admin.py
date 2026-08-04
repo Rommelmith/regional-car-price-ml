@@ -1,3 +1,1 @@
-from django.contrib import admin
-
-# Register your models here.
+"""The predictor app has no database-backed models to register."""
